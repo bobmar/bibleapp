@@ -1,0 +1,10 @@
+{
+    "url":"mongodb://192.168.50.204:27017/bible?connectTimeoutMS=120000&socketTimeoutMS=120000",
+    "bibleBaseDir": "/Users/rober/workspace/bible",
+    "bibleApiDir": "/test-api",
+    "bibleOutputDir": "/output",
+    "bookCollection": "book",
+    "translationCollection": "translation",
+    "chapterCollection": "chapter",
+    "referenceCollection": "reference"
+}
