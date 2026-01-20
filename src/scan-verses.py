@@ -12,15 +12,15 @@ doc_repo = obj_repo.ObjectRepo()
 translations = doc_repo.find_all(parm['translationCollection'])
 
 def retrieve_books(translation_id):
-    criteria = {'translationId': translation_id}
+    crit = {'translationId': translation_id}
     sort = {'bookSequence': 1}
-    return doc_repo.find_by_query(parm['bookCollection'], criteria, sort)
+    return doc_repo.find_by_query(parm['bookCollection'], crit, sort)
 
 
 def retrieve_chapters(book_id, translation_id):
-    criteria = {'translationId': translation_id, 'bookId': book_id}
+    crit = {'translationId': translation_id, 'bookId': book_id}
     sort = {'chapterNumber': 1}
-    return doc_repo.find_by_query(parm['chapterCollection'], criteria, sort)
+    return doc_repo.find_by_query(parm['chapterCollection'], crit, sort)
 
 def scrub_word_string(word_string):
     word_string = word_string.upper()
@@ -48,7 +48,10 @@ for translation in translations:
     for word in word_xref.keys():
         print('Word:',word)
         reference['word'] = word
-        reference['verses'] = word_xref[word]
+        verse_list = []
+        for verse in word_xref[word].values():
+            verse_list.append(verse)
+        reference['verses'] = verse_list
         reference_doc, reference_key = obj_factory.create_reference(reference)
         criteria = {'_id': reference_key}
         doc_repo.update_document(parm['referenceCollection'], criteria, reference_doc)
