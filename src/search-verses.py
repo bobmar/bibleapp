@@ -16,38 +16,29 @@ def find_verse_text(verse_ref):
                 verse_text = verse['verse']
     return verse_text
 
-def process_results(search_results):
-    search_result = {'verses': []}
-
-    for item in search_results:
-        search_result['translation_id'] = item['translationId']
-        search_result['word'] = item['word']
-        print(json.dumps(search_result, indent=4))
-        for verse in item['verses']:
-            verse_text = find_verse_text(verse)
-            if verse_text is not None:
-                verse['verse_text'] = verse_text
-                search_result['verses'].append(verse)
-            else:
-                print('Verse not found for ', verse['chapterId'], verse['verseNum'])
-    return search_result
-
-def find_common_verses(word_result):
+def find_common_verses(word_result, word_count):
     verse_counts = {}
+    common_verses = []
+    #count occurrences of word match
     for item in word_result:
         for verse in item['verses']:
             if verse['verseKey'] not in verse_counts:
-                verse_counts[verse['verseKey']] = 1
+                verse_counts[verse['verseKey']] = verse.copy()
+                verse_counts[verse['verseKey']]['count'] = 1
             else:
-                verse_counts[verse['verseKey']] += 1
+                verse_counts[verse['verseKey']]['count'] += 1
     for key, value in verse_counts.items():
-        if value > 1:
-            print(key)
+        if value['count'] >= word_count:
+            common_verses.append(value)
+    return common_verses
+
 
 word_results = []
 for word in words:
     v = repo.find_by_query(parm['referenceCollection'], {'word': word.upper()}, {'_id':1})
     for ref in v:
         word_results.append(ref)
-find_common_verses(word_results)
-print(json.dumps(word_results, indent=4))
+
+
+result_obj = {'words': words, 'commonVerses': find_common_verses(word_results, len(words)), 'wordResults': word_results}
+print(json.dumps(result_obj, indent=4))
