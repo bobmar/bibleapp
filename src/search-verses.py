@@ -16,6 +16,7 @@ def find_verse_text(verse_ref):
                 verse_text = verse['verse']
     return verse_text
 
+
 def find_common_verses(word_result, word_count):
     verse_counts = {}
     common_verses = []
@@ -29,6 +30,7 @@ def find_common_verses(word_result, word_count):
                 verse_counts[verse['verseKey']]['count'] += 1
     for key, value in verse_counts.items():
         if value['count'] >= word_count:
+            value['verseText'] = find_verse_text(value)
             common_verses.append(value)
     return common_verses
 
