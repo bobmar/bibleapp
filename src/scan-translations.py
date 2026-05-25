@@ -22,6 +22,9 @@ book_io = bookio.Book()
 chapter_io = chapio.ChapterIO()
 object_repo = objrepo.ObjectRepo()
 
+"""
+Load Bible text into DB.
+"""
 
 def prefix_verse_text(verse_line_cnt, verse_str, verse_str_list):
     if verse_line_cnt > 1:

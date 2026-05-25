@@ -6,7 +6,9 @@ from pkg.util import bible_parm
 from pkg.util import word_store
 
 parm = bible_parm.Parm().get_parm()
-
+"""
+Create cross-reference of words to verses
+"""
 print('CWD: ', os.getcwd())
 doc_repo = obj_repo.ObjectRepo()
 translations = doc_repo.find_all(parm['translationCollection'])
